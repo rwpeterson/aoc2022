@@ -1,8 +1,11 @@
+#[allow(unused_imports)]
 use anyhow::{Result, Context};
+#[allow(unused_imports)]
 use either::{Either, Left, Right};
 use std::fs::read_to_string;
 
 mod day3;
+mod day4;
 
 const HELP: &str = "\
 Bob - Advent of Code
@@ -18,7 +21,6 @@ ARGS:
 
 #[derive(Debug)]
 struct AppArgs {
-    first: bool,
     example: bool,
     day: u32
 }
@@ -42,6 +44,7 @@ fn main() -> Result<()> {
 
     let output = match args.day {
         3 => day3::main(&input)?,
+        4 => day4::main(&input)?,
         x => {
             eprintln!("Error: Day {} not implemented", x);
             std::process::exit(1);
@@ -65,7 +68,6 @@ fn parse_args() -> Result<AppArgs, pico_args::Error> {
     }
 
     let args = AppArgs {
-        first: pargs.contains(["-f", "--first"]),
         example: pargs.contains(["-e", "--example"]),
         day: pargs.free_from_str()?,
     };

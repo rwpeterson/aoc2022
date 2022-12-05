@@ -1,4 +1,5 @@
 use anyhow::Result;
+#[allow(unused_imports)]
 use either::{Either, Left, Right};
 use itertools::Itertools;
 use std::collections::HashSet;
