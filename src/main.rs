@@ -6,6 +6,7 @@ use std::fs::read_to_string;
 
 mod day3;
 mod day4;
+mod day5;
 
 const HELP: &str = "\
 Bob - Advent of Code
@@ -45,6 +46,7 @@ fn main() -> Result<()> {
     let output = match args.day {
         3 => day3::main(&input)?,
         4 => day4::main(&input)?,
+        5 => day5::main(&input)?,
         x => {
             eprintln!("Error: Day {} not implemented", x);
             std::process::exit(1);
