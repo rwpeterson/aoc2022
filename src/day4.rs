@@ -6,7 +6,7 @@ use nom::{
     IResult,
     sequence::separated_pair,
     bytes::complete::tag,
-    combinator::map_res,
+    combinator::{map, map_res},
     character::complete::digit1,
 };
 
@@ -35,25 +35,25 @@ impl Assignment {
 }
 
 fn range(input: &str) -> IResult<&str, Range> {
-    let (input, (a, b)) = separated_pair(
-        map_res(digit1, move |d| u32::from_str_radix(d, 10)),
-        tag("-"),
-        map_res(digit1, move |d| u32::from_str_radix(d, 10)),
-    )(input)?;
-    Ok((
-        input,
-        Range(a, b),
-    ))
+    map(
+        separated_pair(
+            map_res(digit1, move |d| u32::from_str_radix(d, 10)),
+            tag("-"),
+            map_res(digit1, move |d| u32::from_str_radix(d, 10)),
+        ),
+        |(a, b)| Range(a, b)
+    )(input)
 }
 
 fn assign(input: &str) -> IResult<&str, Assignment> {
-    let (input, (r0, r1)) = separated_pair(
-        range,
-        tag(","),
-        range,
-    )(input)?;
-
-    Ok((input, Assignment {r: r0, s: r1}))
+    map(
+        separated_pair(
+            range,
+            tag(","),
+            range,
+        ),
+        |(r, s)| Assignment { r, s }
+    )(input)
 }
 
 pub fn main(input: &str) -> Result<Either<String, (String, String)>> {
